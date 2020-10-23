@@ -1,5 +1,5 @@
 import Xstate from 'xstate'
-const {Machine} = Xstate
+const {Machine, interpret, send} = Xstate
 const triggerMachine = Machine(
     {
       id: 'trigger',
@@ -44,4 +44,32 @@ const triggerMachine = Machine(
     }
 );
 
-const actions = triggerMachine.transition('inactive', 'TRIGGER').actions
+const lazyStubbornMachine = Machine({
+  id: 'stubborn',
+  initial: 'inactive',
+  states: {
+    inactive:{
+      on: {
+        TOGGLE: {
+          target: 'active',
+          actions: send('TOGGLE')
+        }
+      }
+    },
+    active: {
+      on: {
+        TOGGLE: 'inactive'
+      }
+    }
+  }
+})
+
+const nextState = lazyStubbornMachine.transition('inactive', 'TOGGLE')
+
+console.log(nextState.actions)
+
+const service = interpret(lazyStubbornMachine)
+service.start().onTransition(state => console.log(state.value))
+
+service.send('TOGGLE')
+// inactive, active, inactive!! since, interpreter is calling send(toggle) from active because we defined in ln 55
