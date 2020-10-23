@@ -1,5 +1,6 @@
 import Xstate from 'xstate'
-const {Machine, interpret, send} = Xstate
+const {Machine, interpret, send, actions} = Xstate
+const {raise} = actions
 const triggerMachine = Machine(
     {
       id: 'trigger',
@@ -52,7 +53,8 @@ const lazyStubbornMachine = Machine({
       on: {
         TOGGLE: {
           target: 'active',
-          actions: send('TOGGLE')
+          actions: raise('TOGGLE')
+          // why no infinite loop?
         }
       }
     },
