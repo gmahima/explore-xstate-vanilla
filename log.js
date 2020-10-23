@@ -31,3 +31,5 @@ service.send('FINISH')
 
 // output: started
 // Finish Label count: 42, event: FINISH
+
+// choose action, pure action
