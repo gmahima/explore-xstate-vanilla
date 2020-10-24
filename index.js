@@ -53,8 +53,8 @@ const lazyStubbornMachine = Machine({
       on: {
         TOGGLE: {
           target: 'active',
-          actions: raise('TOGGLE')
-          // why no infinite loop?
+          actions: send('TOGGLE')
+          // why no infinite loop? because inactive is entered but toggle dosen't occur again. 
         }
       }
     },
@@ -74,4 +74,23 @@ const service = interpret(lazyStubbornMachine)
 service.start().onTransition(state => console.log(state.value))
 
 service.send('TOGGLE')
-// inactive, active, inactive!! since, interpreter is calling send(toggle) from active because we defined in ln 55
+
+//output: 
+// [
+//   {
+//     to: undefined,
+//     type: 'xstate.send',
+//     event: { type: 'TOGGLE' },
+//     delay: undefined,
+//     id: 'TOGGLE',
+//     _event: {
+//       name: 'TOGGLE',
+//       data: [Object],
+//       '$$type': 'scxml',
+//       type: 'external'
+//     }
+//   }
+// ]
+// inactive
+// active
+// inactive
