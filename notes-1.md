@@ -37,6 +37,7 @@ caused by only events.
 but, all events need not cause a transition. (forbidden transitions)
 defines what the next state should be givent current state and event that occured. 
 
+## Guarded Transition - more in guards.md
 # Effects - (can send back events) - caused when an event happens
 but, all events need not cause an action. (forbidden transitions)
 ## Fire and Forget (Sync)
