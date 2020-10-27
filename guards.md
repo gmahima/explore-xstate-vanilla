@@ -12,3 +12,5 @@ A **Guard - condition function**
     }
     ```
 * returns true/false
+
+// see actions.md -> assign for notes
