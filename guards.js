@@ -19,7 +19,10 @@ const searchMachine = Machine({
                 SEARCH: [
                     {
                         target: 'searching',
-                        cond: 'searchValid'
+                        cond: {
+                            type: 'searchValid',
+                            minQueryLength: 3
+                        }
                     },
                     {
                         target: '.invalid'
@@ -34,13 +37,46 @@ const searchMachine = Machine({
 
 }, {
     guards: {
-        searchValid: (context, event) => {
-            return context.canSearch && event.query && event.query.length>0
+        searchValid: (context, event, {cond}) => {
+            return context.canSearch && event.query && event.query.length>cond.minQueryLength
         }
     }
 })
-//see in visualizer. send event => 
-// {
-//     "type": "SEARCH",
-//     "query": "asdf"
-// }
+// const service = interpret(searchMachine)
+// service.start().onTransition(s => console.log(s.value))
+// service.send({
+//     type: "SEARCH",
+//     query: "ad"
+
+// })
+const lightMachine = Machine({
+    id: 'light',
+    initial: 'green',
+    states: {
+      green: { on: { TIMER: 'yellow' } },
+      yellow: { on: { TIMER: 'red' } },
+      red: {
+        initial: 'walk',
+        states: {
+          walk: {
+            /* ... */
+          },
+          wait: {
+            /* ... */
+          },
+          stop: {
+            /* ... */
+          }
+        },
+        on: {
+          TIMER: [
+            {
+              target: 'green',
+              in: '#light.red.stop' // in state gaurd. not recommended, but can be done. 
+              // if any other conds, all must eval to true
+            }
+          ]
+        }
+      }
+    }
+  });
