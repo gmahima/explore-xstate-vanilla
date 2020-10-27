@@ -50,6 +50,8 @@ const createGlassMachine = (capacity) => {
             //         volume: (context) => context.volume + 1
             //     })
             //    // wont work since assign is not called now, it will just return action Object, to be called by interpretator. 
+            // functions like assign which are just pure functions (which dont modify state (extended or not) directly) and return action objects that can be called are called
+            // "ACTION CREATORS"
             // }
         },
         guards: {
