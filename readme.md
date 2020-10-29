@@ -64,3 +64,6 @@ what is send() - send is an action
 
 actions => cause events => events can cause => 1. transition
                                             => 2. action
+
+TODO:
+* **WHAT ARE OBSERVABLES**
